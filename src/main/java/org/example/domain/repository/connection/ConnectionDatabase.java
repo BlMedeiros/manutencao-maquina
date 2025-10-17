@@ -8,7 +8,7 @@ public class ConnectionDatabase {
 
     private static final String URL = "jdbc:mysql://localhost:3306/manutencao?useSSL=false&serverTimezone=UTC";
     private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    private static final String PASSWORD = "";
 
     public static Connection conectar() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);

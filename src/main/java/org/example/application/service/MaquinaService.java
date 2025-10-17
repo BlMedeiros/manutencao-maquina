@@ -3,6 +3,9 @@ package org.example.application.service;
 import org.example.domain.model.Maquina;
 import org.example.domain.repository.MaquinaRepository;
 
+import java.sql.SQLException;
+import java.util.List;
+
 public class MaquinaService {
 
     private final MaquinaRepository maquinaRepository;
@@ -23,5 +26,16 @@ public class MaquinaService {
         }else {
             return "A Máquina ja foi Cadastrada no Sistema";
         }
+    }
+
+    public List<Maquina> listarMaquinaOperacional() throws SQLException {
+
+        List<Maquina> maquinas = maquinaRepository.listarMaquinaOperacional();
+
+        if(maquinas.isEmpty()) {
+            System.out.println("Nenhuma Maquina Registrada Operacional no Momento.");
+        }
+
+        return maquinas;
     }
 }

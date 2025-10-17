@@ -28,7 +28,6 @@ public class ConsoleUtil {
             try {
                 System.out.print(msg);
                 valor = sc.nextLine();
-                sc.nextLine();
                 return valor;
             } catch (InputMismatchException e) {
                 System.out.println("⚠ Entrada inválida. Digite um número inteiro.");

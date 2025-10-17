@@ -6,7 +6,10 @@ import org.example.domain.repository.connection.ConnectionDatabase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MaquinaRepositoryImpl implements MaquinaRepository {
 
@@ -14,7 +17,7 @@ public class MaquinaRepositoryImpl implements MaquinaRepository {
     public String cadastrarMaquina(Maquina maquina) {
         String insertQuery = """
                 INSERT INTO Maquina(nome,setor,status)
-                VALUES ?,?,?
+                VALUES (?,?,?)
                 """;
 
         try (Connection con = ConnectionDatabase.conectar();
@@ -43,16 +46,15 @@ public class MaquinaRepositoryImpl implements MaquinaRepository {
                 FROM maquina
                 WHERE nome = ? AND setor = ?
                 """;
-
         try (Connection con = ConnectionDatabase.conectar();
              PreparedStatement stmt = con.prepareStatement(selectQuery)) {
 
             stmt.setString(1, maquina.getNome());
             stmt.setString(2, maquina.getSetor());
 
-            int linhasAfetadas = stmt.executeUpdate();
+            ResultSet rs = stmt.executeQuery();
 
-            if (linhasAfetadas > 0) {
+            if (rs.next()) {
                 return true;
             } else {
                 return false;
@@ -60,5 +62,37 @@ public class MaquinaRepositoryImpl implements MaquinaRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<Maquina> listarMaquinaOperacional() throws SQLException {
+        String selectQuery = """
+                SELECT id,nome,setor,status
+                FROM maquina
+                WHERE status = 'OPERACIONAL';
+                """;
+
+        List<Maquina> maquinas = new ArrayList<>();
+        try (Connection con = ConnectionDatabase.conectar();
+             PreparedStatement stmt = con.prepareStatement(selectQuery)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nome = rs.getString("nome");
+                String setor = rs.getString("setor");
+                String status = rs.getString("status");
+
+                MaquinaStatus maquinaStatus = MaquinaStatus.valueOf(status);
+
+                Maquina maquina = new Maquina(id,nome,setor,maquinaStatus);
+
+                maquinas.add(maquina);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return maquinas;
     }
 }

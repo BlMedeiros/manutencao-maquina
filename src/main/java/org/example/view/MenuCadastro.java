@@ -33,7 +33,8 @@ public class MenuCadastro {
 
         switch (opcao) {
             case 1:
-                cadastrarMaquina();
+                String resultadoMaquina = cadastrarMaquina();
+                System.out.println(resultadoMaquina);
                 break;
             case 2:
                 cadastrarTecnico();
@@ -71,7 +72,7 @@ public class MenuCadastro {
 
     private String cadastrarPeca() {
 
-        String nomePeca = ConsoleUtil.lerTexto("Digite o Nome da Peça: ");
+        String nomePeca =  ConsoleUtil.lerTexto("Digite o Nome da Peça: ");
 
         Double quantidadePeca = ConsoleUtil.lerDouble("Digite a Quantidade em Estoque Inicial da Peça: ");
 
