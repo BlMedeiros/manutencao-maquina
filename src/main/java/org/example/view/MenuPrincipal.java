@@ -25,7 +25,8 @@ public class MenuPrincipal {
         this.ordemManutencaoService = ordemManutencaoService;
     }
 
-    public void exibirMenu() throws SQLException {
+
+    public boolean exibirMenu() throws SQLException {
 
         System.out.println("-----Menu Principal-----");
         System.out.println("[1] Menu de Cadastro");
@@ -41,10 +42,17 @@ public class MenuPrincipal {
                 new MenuCadastro().exibirMenu();
                 break;
             case 2:
-                cadastrarOrdemManutencao();
+                String resultadoOrdem = cadastrarOrdemManutencao();
+                System.out.println(resultadoOrdem);
                 break;
-
+            case 0:
+                System.out.println("Encerrando o Sistema....");
+                return false;
+            default:
+                System.out.println("Opção Inválida! Tente Novamente.");
         }
+
+        return true;
     }
 
     private String cadastrarOrdemManutencao() throws SQLException {
@@ -62,7 +70,7 @@ public class MenuPrincipal {
                     maquina.getMaquinaStatus());
         });
         int idMaquina = ConsoleUtil.lerOpcao("Digite o Identificador da Máquina: ");
-        //inserir metodo para verificar o id
+
 
         List<Tecnico> tecnicos = tecnicoService.listarTodosTecnicos();
 

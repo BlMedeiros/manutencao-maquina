@@ -17,10 +17,10 @@ public class Main {
         TecnicoService tecnicoService = AppFactory.getTecnicoService();
         OrdemManutencaoService ordemManutencaoService = AppFactory.getOrdemManutencaoService();
 
-        MenuPrincipal menuPrincipal = new MenuPrincipal();
+        MenuPrincipal menuPrincipal = new MenuPrincipal(sc,maquinaService,tecnicoService,ordemManutencaoService);
 
-        while (true) {
-            menuPrincipal.exibirMenu();
+        while (menuPrincipal.exibirMenu()) {
+
         }
     }
 }

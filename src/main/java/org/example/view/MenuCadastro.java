@@ -37,10 +37,12 @@ public class MenuCadastro {
                 System.out.println(resultadoMaquina);
                 break;
             case 2:
-                cadastrarTecnico();
+                String resultadoTecnico = cadastrarTecnico();
+                System.out.println(resultadoTecnico);
                 break;
             case 3:
-                System.out.println();
+                String resultadoPeca = cadastrarPeca();
+                System.out.println(resultadoPeca);
                 break;
             case 0:
                 return;
