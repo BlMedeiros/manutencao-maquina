@@ -3,9 +3,13 @@ package org.example.domain.repository;
 import org.example.domain.model.Maquina;
 import org.example.domain.model.OrdemManutencao;
 import org.example.domain.model.enums.MaquinaStatus;
+import org.example.domain.model.enums.StatusOrdem;
 import org.example.domain.repository.connection.ConnectionDatabase;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrdemManutencaoRepositoryImpl implements OrdemManutencaoRepository{
 
@@ -35,5 +39,37 @@ public class OrdemManutencaoRepositoryImpl implements OrdemManutencaoRepository{
         }catch (SQLException e) {
             return "Ocorreu um Erro ao Cadastrar "+e;
         }
+    }
+
+    @Override
+    public List<OrdemManutencao> listarOrdemManutencaoPendente() throws SQLException {
+        List<OrdemManutencao> ordemManutencaoList = new ArrayList<>();
+
+        String selectQuery = """
+                SELECT id,idMaquina,idTecnico,dataSolicitacao,status
+                FROM ordemmanutencao
+                WHERE status = 'PENDENTE'
+                """;
+
+        try (Connection con = ConnectionDatabase.conectar();
+             PreparedStatement stmt = con.prepareStatement(selectQuery)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                int idOrdem = rs.getInt("id");
+                int idMaquina = rs.getInt("idMaquina");
+                int idTecnico = rs.getInt("idTecnico");
+                LocalDate dataSolicitacao = rs.getDate("dataSolicitacao").toLocalDate();
+
+                String statusString = rs.getString("status");
+
+                StatusOrdem statusOrdem = StatusOrdem.valueOf(statusString.toUpperCase());
+
+                ordemManutencaoList.add(new OrdemManutencao(idOrdem,idMaquina,idTecnico,dataSolicitacao,statusOrdem));
+            }
+        }
+        return ordemManutencaoList;
     }
 }
