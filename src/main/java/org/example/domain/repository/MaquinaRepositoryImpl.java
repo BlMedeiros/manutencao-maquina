@@ -1,6 +1,7 @@
 package org.example.domain.repository;
 
 import org.example.domain.model.Maquina;
+import org.example.domain.model.OrdemManutencao;
 import org.example.domain.model.enums.MaquinaStatus;
 import org.example.domain.repository.connection.ConnectionDatabase;
 
@@ -86,7 +87,7 @@ public class MaquinaRepositoryImpl implements MaquinaRepository {
 
                 MaquinaStatus maquinaStatus = MaquinaStatus.valueOf(status);
 
-                Maquina maquina = new Maquina(id,nome,setor,maquinaStatus);
+                Maquina maquina = new Maquina(id, nome, setor, maquinaStatus);
 
                 maquinas.add(maquina);
             }
@@ -94,5 +95,27 @@ public class MaquinaRepositoryImpl implements MaquinaRepository {
             throw new RuntimeException(e);
         }
         return maquinas;
+    }
+
+    @Override
+    public void atualizarStatusMaquina(OrdemManutencao ordemManutencao) {
+        String updateQuery = """
+                UPDATE maquina
+                SET status = 'EM_MANUTENCAO'
+                WHERE id = ?
+                """;
+
+        try (Connection con = ConnectionDatabase.conectar();
+             PreparedStatement stmt = con.prepareStatement(updateQuery)) {
+
+            stmt.setInt(1, ordemManutencao.getIdMaquina());
+
+            stmt.executeUpdate();
+
+            // implementar algum retorno ao usuario
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

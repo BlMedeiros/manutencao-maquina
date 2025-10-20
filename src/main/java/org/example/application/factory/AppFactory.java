@@ -23,7 +23,7 @@ public class AppFactory {
     private static final MaquinaService maquinaService = new MaquinaService(maquinaRepository);
     private static final TecnicoService tecnicoService = new TecnicoService(tecnicoRepository);
     private static final PecaService pecaService = new PecaService(pecaRepository);
-    private static final OrdemManutencaoService ordemManutencaoService = new OrdemManutencaoService(ordemManutencaoRepository);
+    private static final OrdemManutencaoService ordemManutencaoService = new OrdemManutencaoService(ordemManutencaoRepository, maquinaRepository);
     // ======= GETTERS =========
 
 

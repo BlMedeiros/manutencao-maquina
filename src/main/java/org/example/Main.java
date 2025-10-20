@@ -3,6 +3,7 @@ package org.example;
 import org.example.application.factory.AppFactory;
 import org.example.application.service.MaquinaService;
 import org.example.application.service.OrdemManutencaoService;
+import org.example.application.service.PecaService;
 import org.example.application.service.TecnicoService;
 import org.example.view.MenuPrincipal;
 
@@ -16,8 +17,9 @@ public class Main {
         MaquinaService maquinaService = AppFactory.getMaquinaService();
         TecnicoService tecnicoService = AppFactory.getTecnicoService();
         OrdemManutencaoService ordemManutencaoService = AppFactory.getOrdemManutencaoService();
+        PecaService pecaService = AppFactory.getPecaService();
 
-        MenuPrincipal menuPrincipal = new MenuPrincipal(sc,maquinaService,tecnicoService,ordemManutencaoService);
+        MenuPrincipal menuPrincipal = new MenuPrincipal(sc,maquinaService,tecnicoService,ordemManutencaoService,pecaService);
 
         while (menuPrincipal.exibirMenu()) {
 
