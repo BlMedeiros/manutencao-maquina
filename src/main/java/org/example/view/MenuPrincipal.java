@@ -28,7 +28,7 @@ public class MenuPrincipal {
 
     public boolean exibirMenu() throws SQLException {
 
-        System.out.println("-----Menu Principal-----");
+        System.out.println("\n-----Menu Principal-----");
         System.out.println("[1] Menu de Cadastro");
         System.out.println("[2] Criar Ordem de Manutenção");
         System.out.println("[3] Associar Peças a Ordem");
@@ -45,6 +45,9 @@ public class MenuPrincipal {
                 String resultadoOrdem = cadastrarOrdemManutencao();
                 System.out.println(resultadoOrdem);
                 break;
+            case 3:
+                associarPecaOrdem();
+            break;
             case 0:
                 System.out.println("Encerrando o Sistema....");
                 return false;
@@ -88,5 +91,21 @@ public class MenuPrincipal {
         OrdemManutencao ordemManutencao = new OrdemManutencao(idMaquina, idTecnico);
 
         return ordemManutencaoService.cadastrarOrdemManutencao(ordemManutencao);
+    }
+
+    private void associarPecaOrdem() throws SQLException {
+        List<OrdemManutencao> ordemManutencoes = ordemManutencaoService.listarOrdemManutencaoPendente();
+
+        ordemManutencoes.forEach(ordemManutencao -> {
+            System.out.printf("ID: %-5d | Id Máquina: %-5d | Id Técnico: %-5d | Data da Solicitação: %-15s | Status: %-15s",
+                    ordemManutencao.getIdOrdem(),
+                    ordemManutencao.getIdMaquina(),
+                    ordemManutencao.getIdTecnico(),
+                    ordemManutencao.getDataSolicitacao().toString().replace("-","/"),
+                    ordemManutencao.getStatusOrdem().toString());
+
+        });
+
+
     }
 }

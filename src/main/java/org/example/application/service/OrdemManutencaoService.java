@@ -4,7 +4,9 @@ import org.example.domain.model.OrdemManutencao;
 import org.example.domain.model.enums.StatusOrdem;
 import org.example.domain.repository.OrdemManutencaoRepository;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class OrdemManutencaoService {
 
@@ -23,5 +25,9 @@ public class OrdemManutencaoService {
         ordemManutencao.setStatusOrdem(StatusOrdem.PENDENTE);
 
         return ordemManutencaoRepository.cadastrarOrdemManutencao(ordemManutencao);
+    }
+
+    public List<OrdemManutencao> listarOrdemManutencaoPendente() throws SQLException {
+        return ordemManutencaoRepository.listarOrdemManutencaoPendente();
     }
 }
