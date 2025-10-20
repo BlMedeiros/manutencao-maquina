@@ -3,6 +3,8 @@ package org.example.application.service;
 import org.example.domain.model.PecasReposicao;
 import org.example.domain.repository.PecaRepository;
 
+import java.util.List;
+
 public class PecaService {
     private final PecaRepository pecaRepository;
 
@@ -22,5 +24,9 @@ public class PecaService {
         }else {
             return "A Peça "+pecasReposicao.getNome()+" Já Existe no Sistema";
         }
+    }
+
+    public List<PecasReposicao> listarPeca() {
+        return pecaRepository.listarPecas();
     }
 }

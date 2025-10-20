@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PecaRepositoryImpl implements PecaRepository {
 
@@ -58,5 +60,32 @@ public class PecaRepositoryImpl implements PecaRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<PecasReposicao> listarPecas() {
+        String selectQuery = """
+                SELECT id,nome,estoque
+                FROM peca
+                """;
+
+        List<PecasReposicao> reposicaoList = new ArrayList<>();
+
+        try (Connection con = ConnectionDatabase.conectar();
+             PreparedStatement stmt = con.prepareStatement(selectQuery)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int idPeca = rs.getInt("id");
+                String nomePeca = rs.getString("nome");
+                Double quantidadePeca = rs.getDouble("estoque");
+
+                reposicaoList.add(new PecasReposicao(idPeca,nomePeca,quantidadePeca));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return reposicaoList;
     }
 }
