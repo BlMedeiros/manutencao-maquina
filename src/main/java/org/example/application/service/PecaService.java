@@ -17,7 +17,7 @@ public class PecaService {
 
         boolean pecaExiste = pecaRepository.buscarPecaExistente(pecasReposicao);
 
-        if(pecaExiste) {
+        if(!pecaExiste) {
             return pecaRepository.cadastrarPeca(pecasReposicao);
         }else {
             return "A Peça "+pecasReposicao.getNome()+" Já Existe no Sistema";
