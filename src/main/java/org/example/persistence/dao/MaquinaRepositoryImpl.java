@@ -1,9 +1,10 @@
-package org.example.domain.repository;
+package org.example.persistence.dao;
 
 import org.example.domain.model.Maquina;
 import org.example.domain.model.OrdemManutencao;
 import org.example.domain.model.enums.MaquinaStatus;
-import org.example.domain.repository.connection.ConnectionDatabase;
+import org.example.domain.repository.MaquinaRepository;
+import org.example.persistence.connection.ConnectionDatabase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

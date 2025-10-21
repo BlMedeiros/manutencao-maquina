@@ -1,4 +1,4 @@
-package org.example.domain.repository.connection;
+package org.example.persistence.connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

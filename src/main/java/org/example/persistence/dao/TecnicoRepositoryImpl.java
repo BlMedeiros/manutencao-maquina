@@ -1,7 +1,8 @@
-package org.example.domain.repository;
+package org.example.persistence.dao;
 
 import org.example.domain.model.Tecnico;
-import org.example.domain.repository.connection.ConnectionDatabase;
+import org.example.domain.repository.TecnicoRepository;
+import org.example.persistence.connection.ConnectionDatabase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,7 +1,8 @@
-package org.example.domain.repository;
+package org.example.persistence.dao;
 
 import org.example.domain.model.PecasReposicao;
-import org.example.domain.repository.connection.ConnectionDatabase;
+import org.example.domain.repository.PecaRepository;
+import org.example.persistence.connection.ConnectionDatabase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -88,4 +89,6 @@ public class PecaRepositoryImpl implements PecaRepository {
         }
         return reposicaoList;
     }
+
+
 }
