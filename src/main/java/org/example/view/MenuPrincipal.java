@@ -112,11 +112,6 @@ public class MenuPrincipal {
 
         int opcao = ConsoleUtil.lerOpcao("\nDigite o Identificador da Ordem de Manutenção: ");
 
-        while(opcao > ordemManutencoes.size() || opcao < ordemManutencoes.size()) {
-            opcao = ConsoleUtil.lerOpcao("Opção Invalida! Digite Novamente: ");
-        }
-
-
         List<PecasReposicao> reposicaoList = pecaService.listarPeca();
 
         reposicaoList.forEach(pecasReposicao -> {
@@ -157,8 +152,6 @@ public class MenuPrincipal {
 
             System.out.println("\nResumo: Vinculando a Ordem de ID " + opcao +
                     " as Peças IDs: " + idPecaList);
-
-
         } else {
             System.out.println("Nenhuma Peça Selecionada. Operação Cancelada.");
         }
