@@ -5,7 +5,10 @@ import org.example.application.service.OrdemManutencaoService;
 import org.example.application.service.PecaService;
 import org.example.application.service.TecnicoService;
 import org.example.domain.repository.*;
-import org.example.view.MenuPrincipal;
+import org.example.persistence.dao.MaquinaRepositoryImpl;
+import org.example.persistence.dao.OrdemManutencaoRepositoryImpl;
+import org.example.persistence.dao.PecaRepositoryImpl;
+import org.example.persistence.dao.TecnicoRepositoryImpl;
 
 import java.util.Scanner;
 

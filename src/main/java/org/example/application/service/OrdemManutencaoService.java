@@ -1,6 +1,7 @@
 package org.example.application.service;
 
 import org.example.domain.model.OrdemManutencao;
+import org.example.domain.model.PecasReposicao;
 import org.example.domain.model.enums.StatusOrdem;
 import org.example.domain.repository.MaquinaRepository;
 import org.example.domain.repository.OrdemManutencaoRepository;
@@ -34,5 +35,9 @@ public class OrdemManutencaoService {
 
     public List<OrdemManutencao> listarOrdemManutencaoPendente() throws SQLException {
         return ordemManutencaoRepository.listarOrdemManutencaoPendente();
+    }
+
+    public String cadastrarOrdemItem(Integer idOrdem, List<PecasReposicao> pecasReposicaoList) throws SQLException {
+        return ordemManutencaoRepository.cadastrarOrdemItem(idOrdem,pecasReposicaoList);
     }
 }

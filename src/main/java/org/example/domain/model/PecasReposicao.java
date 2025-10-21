@@ -16,6 +16,11 @@ public class PecasReposicao {
         this.estoque = estoque;
     }
 
+    public PecasReposicao(int idPeca, Double estoque) {
+        this.idPeca = idPeca;
+        this.estoque = estoque;
+    }
+
     public int getIdPeca() {
         return idPeca;
     }

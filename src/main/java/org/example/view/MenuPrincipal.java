@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class MenuPrincipal {
     private final Scanner sc;
@@ -121,11 +123,13 @@ public class MenuPrincipal {
                     pecasReposicao.getEstoque());
         });
 
-        List<Integer> idPecaList = new ArrayList<>();
+        List<PecasReposicao> pecaList = new ArrayList<>();
         int idPeca;
 
+        List<Integer> idPecaList = reposicaoList.stream().map(PecasReposicao::getIdPeca).toList();
+
         System.out.println("\n----- Seleção de Peças -----");
-        System.out.println("Digite o Identtificador das Peças a Serem Vinculadas (Ou 0 Para Finalizar):");
+        System.out.println("Digite o Identificador das Peças a Serem Vinculadas (Ou 0 Para Finalizar):");
 
         while (true) {
             System.out.print("ID: ");
@@ -136,11 +140,26 @@ public class MenuPrincipal {
 
                 if (idPeca == 0) {
                     break;
-                } else if (idPeca > 0) {
-                    idPecaList.add(idPeca);
-                    System.out.println("ID " + idPeca + " adicionado. Digite o próximo ou 0 para finalizar.");
-                } else {
-                    System.out.println("ID inválido. Digite um número positivo ou 0 para finalizar.");
+                } else if (idPecaList.contains(idPeca)) {
+                    Double quantidadePeca = ConsoleUtil.lerDouble("Digite a Quantidade de Peça a Ser Associada: ");
+
+                    int finalIdPeca = idPeca;
+                    if(quantidadePeca > reposicaoList.stream()
+                            .filter(pecasReposicao -> pecasReposicao.getIdPeca() == finalIdPeca)
+                            .map(PecasReposicao::getEstoque)
+                            .findFirst()
+                            .orElse(0.0)) {
+
+                        System.out.println("A Quantidade não pode ser Maior que o Estoque!");
+                    } else {
+                        PecasReposicao pecasReposicao = new PecasReposicao(idPeca, quantidadePeca);
+
+                        pecaList.add(pecasReposicao);
+
+                        System.out.println("ID " + idPeca + " adicionado. Digite o próximo ou 0 para finalizar.");
+                    }
+                    } else {
+                    System.out.println("ID inválido. Digite um Identificador que Exista ou 0 para finalizar.");
                 }
             } else {
                 System.out.println("Entrada inválida. Digite apenas números.");
@@ -148,10 +167,14 @@ public class MenuPrincipal {
             }
         }
 
-        if (!idPecaList.isEmpty()) {
+        if (!pecaList.isEmpty()) {
+
+            List<Integer> pecaId = pecaList.stream().map(PecasReposicao::getIdPeca).toList();
 
             System.out.println("\nResumo: Vinculando a Ordem de ID " + opcao +
-                    " as Peças IDs: " + idPecaList);
+                    " as Peças IDs: "+ pecaId);
+
+            ordemManutencaoService.cadastrarOrdemItem(opcao,pecaList);
         } else {
             System.out.println("Nenhuma Peça Selecionada. Operação Cancelada.");
         }
