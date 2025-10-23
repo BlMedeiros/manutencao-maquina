@@ -113,7 +113,25 @@ public class MaquinaRepositoryImpl implements MaquinaRepository {
 
             stmt.executeUpdate();
 
-            // implementar algum retorno ao usuario
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void atualizarStatusMaquinaOperacional(int idMaquina) {
+        String updateQuery = """
+                UPDATE maquina
+                SET status = 'OPERACIONAL'
+                WHERE id = ?
+                """;
+
+        try (Connection con = ConnectionDatabase.conectar();
+             PreparedStatement stmt = con.prepareStatement(updateQuery)) {
+
+            stmt.setInt(1, idMaquina);
+
+            stmt.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

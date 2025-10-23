@@ -15,4 +15,6 @@ public interface MaquinaRepository {
     List<Maquina> listarMaquinaOperacional() throws SQLException;
 
     void atualizarStatusMaquina(OrdemManutencao ordemManutencao);
+
+    void atualizarStatusMaquinaOperacional(int idMaquina);
 }
