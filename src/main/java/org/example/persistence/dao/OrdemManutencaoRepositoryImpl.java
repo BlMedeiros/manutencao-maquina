@@ -102,4 +102,78 @@ public class OrdemManutencaoRepositoryImpl implements OrdemManutencaoRepository 
         }
         return "Cadastro Bem-Sucedido";
     }
+
+        @Override
+        public OrdemManutencao buscarOrdemComItens(int idOrdem) throws SQLException {
+            OrdemManutencao ordem = null;
+            List<PecasReposicao> pecasUtilizadas = new ArrayList<>();
+
+            String sqlOrdem = """
+                    SELECT id, idMaquina, idTecnico, dataSolicitacao, status
+                    FROM ordemmanutencao WHERE id = ?
+                    """;
+
+            try (Connection con = ConnectionDatabase.conectar();
+                 PreparedStatement stmt = con.prepareStatement(sqlOrdem)) {
+
+                stmt.setInt(1, idOrdem);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        ordem = new OrdemManutencao(
+                                rs.getInt("id"),
+                                rs.getInt("idMaquina"),
+                                rs.getInt("idTecnico"),
+                                rs.getDate("dataSolicitacao").toLocalDate(),
+                                StatusOrdem.valueOf(rs.getString("status").toUpperCase())
+                        );
+                    } else {
+                        return null;
+                    }
+                }
+
+                if (ordem != null) {
+                    String sqlItens = """
+                            SELECT op.idPeca, op.quantidade, p.nome FROM ordempeca op
+                            JOIN peca p ON op.idPeca = p.id
+                            WHERE op.idOrdem = ?
+                            """;
+
+                    try (PreparedStatement psItens = con.prepareStatement(sqlItens)) {
+                        psItens.setInt(1, idOrdem);
+                        try (ResultSet rsItens = psItens.executeQuery()) {
+                            while (rsItens.next()) {
+                                int idPeca = rsItens.getInt("idPeca");
+                                double quantidade = rsItens.getDouble("quantidade");
+                                String nomePeca = rsItens.getString("nome");
+
+                                PecasReposicao peca = new PecasReposicao(idPeca, nomePeca, 0.0);
+                                peca.setEstoque(quantidade);
+                                pecasUtilizadas.add(peca);
+                            }
+                        }
+                    }
+
+                    ordem.setPecasUtilizadas(pecasUtilizadas);
+                }
+            }
+
+
+            return ordem;
+        }
+
+    public void atualizarStatus(int idOrdem, StatusOrdem status) {
+        String sql = "UPDATE ordemmanutencao SET status = ? WHERE id = ?";
+
+        try (Connection con = ConnectionDatabase.conectar();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setString(1, status.name());
+            stmt.setInt(2, idOrdem);
+
+            stmt.executeUpdate();
+
+        }catch(SQLException e) {
+            System.err.println("Ocorreu um Erro no Banco de Dados: "+e);
+        }
+    }
 }
