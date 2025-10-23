@@ -29,4 +29,5 @@ public class PecaService {
     public List<PecasReposicao> listarPeca() {
         return pecaRepository.listarPecas();
     }
+
 }

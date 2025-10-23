@@ -90,5 +90,25 @@ public class PecaRepositoryImpl implements PecaRepository {
         return reposicaoList;
     }
 
+    public void baixarEstoque(List<PecasReposicao> pecas) throws SQLException {
+        String sql = "UPDATE peca SET estoque = estoque - ? WHERE id = ?";
 
+        try (Connection con = ConnectionDatabase.conectar();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            for (PecasReposicao peca : pecas) {
+                stmt.setDouble(1, peca.getEstoque());
+                stmt.setInt(2, peca.getIdPeca());
+                stmt.addBatch();
+            }
+
+            int[] linhasAfetadas = stmt.executeBatch();
+
+            for (int count : linhasAfetadas) {
+                if (count == 0) {
+                    System.err.println("Aviso: Baixa de estoque falhou para uma das peças (ID ou quantidade inválida).");
+                }
+            }
+        }
+    }
 }
